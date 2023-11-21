@@ -7,9 +7,13 @@ from graphviz import Digraph
 import networkx as nx
 from neo4j import GraphDatabase
 from flask import Flask, jsonify, render_template, request
-# from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-#load_dotenv()
+dotenv_path = find_dotenv() 
+load_dotenv(dotenv_path)
+
+OIA_API_KEY = os.environ.get('OIA_API_KEY')
+NEO_API_KEY = os.environ.get('NEO_API_KEY')
 
 app = Flask(__name__)
 
@@ -18,12 +22,11 @@ openai.api_key = OIA_API_KEY
 response_data = ""
 
 # If Neo4j credentials are set, then Neo4j is used to store information
-# neo4j_username = os.environ.get("NEO4J_USERNAME")
-neo4j_username = "neo4j"
-# neo4j_password = os.environ.get("NEO4J_PASSWORD")
+neo4j_username = os.environ.get("NEO4J_USERNAME")
+#neo4j_username = "neo4j"
 neo4j_password= NEO_API_KEY
 # neo4j_url = os.environ.get("NEO4J_URL")
-neo4j_url= "neo4j+s://c54d4c5c.databases.neo4j.io"
+neo4j_url= os.environ.get("NEO4J_URL")
 neo4j_driver = None
 if neo4j_username and neo4j_password and neo4j_url:
     neo4j_driver = GraphDatabase.driver(
